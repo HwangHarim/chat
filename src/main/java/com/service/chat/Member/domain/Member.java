@@ -1,23 +1,19 @@
-package com.service.chat.message.domain;
+package com.service.chat.Member.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-@RedisHash("chat-message")
+@RedisHash("chat-member")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@Getter
-public class Message {
+public class Member {
     @Id
-    private Long Id;
+    private Long id;
 
-    private Long roomId;
     private String uuid;
-    private String context;
 }

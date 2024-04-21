@@ -1,5 +1,8 @@
 package com.service.chat.message.domain;
 
+import com.service.chat.message.dto.response.ChatMessageResponse;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,16 +11,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-@RedisHash("chat-message")
+@RedisHash("chat-room")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
-public class Message {
+public class Room {
     @Id
-    private Long Id;
-
-    private Long roomId;
-    private String uuid;
-    private String context;
+    private Long id;
+    private List<Message> messages =  new ArrayList<>();
 }
