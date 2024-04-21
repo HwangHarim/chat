@@ -40,7 +40,7 @@ public class RedisController {
         return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, messages);
     }
 
-    @PostMapping("/room")
+    @GetMapping("/room")
     public ResponseEntity<?> createRoom(){
         var roomId = chatRoomService.createRoom();
 
