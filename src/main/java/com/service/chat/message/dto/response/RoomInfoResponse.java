@@ -5,9 +5,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ChatMessageResponse {
+public class RoomInfoResponse {
+    private String memberId;
     private Long roomId;
     private int roomIndex;
-    private String sender;
-    private String context;
 }

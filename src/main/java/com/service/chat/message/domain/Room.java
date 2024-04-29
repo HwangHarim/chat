@@ -1,6 +1,6 @@
 package com.service.chat.message.domain;
 
-import com.service.chat.message.dto.response.ChatMessageResponse;
+import com.service.chat.message.domain.vo.RoomMember;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -17,7 +17,9 @@ import org.springframework.data.redis.core.RedisHash;
 @Builder
 @Getter
 public class Room {
+
     @Id
     private Long id;
+    private RoomMember roomMember = new RoomMember();
     private List<Message> messages =  new ArrayList<>();
 }

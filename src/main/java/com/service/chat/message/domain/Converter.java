@@ -1,7 +1,6 @@
 package com.service.chat.message.domain;
 
 import com.service.chat.message.dto.request.ChatMessageRequest;
-import com.service.chat.message.dto.response.ChatLogResponse;
 import com.service.chat.message.dto.response.ChatMessageResponse;
 import java.util.ArrayList;
 import java.util.List;

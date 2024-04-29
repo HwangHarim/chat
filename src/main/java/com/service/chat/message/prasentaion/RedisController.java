@@ -3,12 +3,15 @@ package com.service.chat.message.prasentaion;
 import com.service.chat.message.application.ChatRoomService;
 import com.service.chat.message.application.RedisPubService;
 import com.service.chat.message.application.RedisSubService;
+import com.service.chat.message.dto.request.AddAndDeleteMemberRequest;
 import com.service.chat.message.dto.request.ChatLogRequest;
 import com.service.chat.message.dto.request.ChatMessageRequest;
+import com.service.chat.message.dto.request.MembersRequest;
 import com.service.chat.response.ResponseDto;
 import com.service.chat.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,12 +31,12 @@ public class RedisController {
     public ResponseEntity<?> sendMessage(@RequestBody ChatMessageRequest chatMessage) {
         //메시지 보내기
         redisPubService.sendMessage(chatMessage);
-        chatRoomService.addMessage(chatMessage);
+        var message = chatRoomService.addMessage(chatMessage);
 
-        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, "success");
+        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, message);
     }
 
-    @GetMapping("/chat_messages")
+    @GetMapping("/messages")
     public ResponseEntity<?> getMessages(@RequestBody ChatLogRequest request){
         var messages = chatRoomService.getAllRoomChat(request);
 
@@ -45,5 +48,27 @@ public class RedisController {
         var roomId = chatRoomService.createRoom();
 
         return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, roomId);
+    }
+
+    @PostMapping("/roomIndex")
+    public ResponseEntity<?> addMemberRoom(@RequestBody AddAndDeleteMemberRequest request){
+        var roomIndex = chatRoomService.setMember(request);
+
+        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, roomIndex);
+    }
+
+    @GetMapping("/roomIndex")
+    public ResponseEntity<?> getMemberRoom(@RequestBody MembersRequest request){
+        var members = chatRoomService.getAllRoomMember(request.getRoomId());
+
+        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, members);
+    }
+
+    @DeleteMapping("/roomIndex")
+    public ResponseEntity<?> deleteMemberRoom(@RequestBody AddAndDeleteMemberRequest request){
+        chatRoomService.deleteMember(request);
+        var members = chatRoomService.getAllRoomMember(request.getRoomId());
+
+        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, members);
     }
 }
