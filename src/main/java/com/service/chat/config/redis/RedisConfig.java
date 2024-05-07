@@ -1,6 +1,6 @@
 package com.service.chat.config.redis;
 
-import com.service.chat.message.application.RedisSubService;
+import com.service.chat.message.application.MessageService;
 import com.service.chat.message.dto.request.ChatMessageRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -43,13 +43,13 @@ public class RedisConfig {
 
     //리스너어댑터 설정
     @Bean
-    MessageListenerAdapter messageListenerAdapter(RedisSubService subscriber) {
+    MessageListenerAdapter messageListenerAdapter(MessageService subscriber) {
         return new MessageListenerAdapter(subscriber);
     }
 
     //컨테이너 설정
     @Bean
-    RedisMessageListenerContainer redisContainer(RedisSubService subscriber) {
+    RedisMessageListenerContainer redisContainer(MessageService subscriber) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(redisConnectionFactory());
         container.addMessageListener(messageListenerAdapter(subscriber), topic());

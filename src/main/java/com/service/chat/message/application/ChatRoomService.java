@@ -3,7 +3,6 @@ package com.service.chat.message.application;
 import com.service.chat.message.domain.Converter;
 import com.service.chat.message.domain.Room;
 import com.service.chat.message.dto.request.AddAndDeleteMemberRequest;
-import com.service.chat.message.dto.request.ChatLogRequest;
 import com.service.chat.message.dto.request.ChatMessageRequest;
 import com.service.chat.message.dto.response.AllRoomMembersResponse;
 import com.service.chat.message.dto.response.AllRoomResponse;
@@ -41,8 +40,8 @@ public class ChatRoomService {
            .build();
     }
 
-    public List<ChatMessageResponse> getAllRoomChat(ChatLogRequest request){
-        var room =  roomRepository.findById(request.getRoomId()).get();
+    public List<ChatMessageResponse> getAllRoomChat(Long roomId){
+        var room =  roomRepository.findById(roomId).get();
 
         return converter.toMessagesResponse(room.getMessages());
     }
@@ -76,5 +75,10 @@ public class ChatRoomService {
 
     public AllRoomResponse getAllRoom(){
         return converter.toAllRoomResponse(roomRepository.findAll().iterator());
+    }
+
+    public void deleteRoom(Long roomId){
+        var room = roomRepository.findById(roomId).get();
+        roomRepository.delete(room);
     }
 }

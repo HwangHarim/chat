@@ -13,4 +13,14 @@ public class RedisPubService {
     public void sendMessage(ChatMessageRequest chatMessage) {
         redisTemplate.convertAndSend("chat", chatMessage);
     }
+
+//    public void sendMessage(String chanel, Message message){
+//        ListOperations<String, Message> listOps = redisTemplate.opsForList();
+//        listOps.rightPush(chanel, message);
+//    }
+//
+//    public List<Message> getMessages(String channel) {
+//        ListOperations<String, Message> listOps = redisTemplate.opsForList();
+//        return listOps.range(channel, 0, -1);
+//    }
 }
