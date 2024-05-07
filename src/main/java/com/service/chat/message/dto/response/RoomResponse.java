@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AllRoomMembersResponse {
-    private RoomInfo[] members;
+public class RoomResponse {
+    public Long roomId;
 }

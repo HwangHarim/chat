@@ -29,7 +29,6 @@ public class RedisController {
 
     @PostMapping("/messages")
     public ResponseEntity<?> sendMessage(@RequestBody ChatMessageRequest chatMessage) {
-        //메시지 보내기
         redisPubService.sendMessage(chatMessage);
         var message = chatRoomService.addMessage(chatMessage);
 
@@ -70,5 +69,12 @@ public class RedisController {
         var members = chatRoomService.getAllRoomMember(request.getRoomId());
 
         return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, members);
+    }
+
+    @GetMapping("/allRooms")
+    public ResponseEntity<?> getAllRoom(){
+        var allRooms = chatRoomService.getAllRoom();
+
+        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, allRooms);
     }
 }

@@ -1,9 +1,16 @@
 package com.service.chat.message.domain;
 
+import com.service.chat.message.domain.vo.RoomLimit;
 import com.service.chat.message.dto.request.ChatMessageRequest;
+import com.service.chat.message.dto.response.AllRoomResponse;
 import com.service.chat.message.dto.response.ChatMessageResponse;
+import com.service.chat.message.dto.response.RoomResponse;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Converter {
 
@@ -35,5 +42,12 @@ public class Converter {
             );
         }
         return answer;
+    }
+
+    public AllRoomResponse toAllRoomResponse(Iterator<Room> rooms){
+        List<RoomResponse> result = StreamSupport.stream(Spliterators.spliteratorUnknownSize(rooms, 0), false)
+            .map(room -> new RoomResponse(room.getId()))
+            .collect(Collectors.toList());
+        return new AllRoomResponse(result);
     }
 }

@@ -6,6 +6,7 @@ import com.service.chat.message.dto.request.AddAndDeleteMemberRequest;
 import com.service.chat.message.dto.request.ChatLogRequest;
 import com.service.chat.message.dto.request.ChatMessageRequest;
 import com.service.chat.message.dto.response.AllRoomMembersResponse;
+import com.service.chat.message.dto.response.AllRoomResponse;
 import com.service.chat.message.dto.response.ChatMessageResponse;
 import com.service.chat.message.dto.response.RoomInfoResponse;
 import com.service.chat.message.infrastructure.RoomRepository;
@@ -55,7 +56,8 @@ public class ChatRoomService {
 
     public AllRoomMembersResponse getAllRoomMember(Long roomId){
         var room = roomRepository.findById(roomId).get();
-        return new AllRoomMembersResponse(room.getRoomMember().getMembers());
+
+        return new AllRoomMembersResponse(room.getRoomMember().getMemberArr());
     }
 
     public void deleteMember(AddAndDeleteMemberRequest request){
@@ -70,5 +72,9 @@ public class ChatRoomService {
             .roomId(request.getRoomId())
             .roomIndex(getRoomIndex(request))
             .build();
+    }
+
+    public AllRoomResponse getAllRoom(){
+        return converter.toAllRoomResponse(roomRepository.findAll().iterator());
     }
 }
