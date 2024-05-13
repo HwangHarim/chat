@@ -1,10 +1,9 @@
 package com.service.chat.message.prasentaion;
 
 import com.service.chat.message.application.ChatRoomService;
-import com.service.chat.message.application.RedisPubService;
-import com.service.chat.message.application.MessageService;
 import com.service.chat.message.dto.request.AddAndDeleteMemberRequest;
 import com.service.chat.message.dto.request.ChatMessageRequest;
+import com.service.chat.message.dto.request.SendMessageRequest;
 import com.service.chat.response.ResponseDto;
 import com.service.chat.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RedisController {
 
-    private final RedisPubService redisPubService;
-    private final MessageService redisSubService;
     private final ChatRoomService chatRoomService;
 
     @GetMapping("/messages/{roomId}")
@@ -31,14 +28,15 @@ public class RedisController {
     public ResponseEntity<?> sendMessage(
             @PathVariable Long roomId,
             @PathVariable String memberId,
-            @RequestBody ChatMessageRequest chatMessage) {
+            @RequestBody SendMessageRequest request
+    ) {
+        var msg = chatRoomService.addMessage(ChatMessageRequest.builder()
+                .roomId(roomId)
+                .sender(memberId)
+                .context(request.getContext())
+                .build());
 
-        chatMessage.setRoomId(roomId);
-        chatMessage.setSender(memberId);
-        redisPubService.sendMessage(chatMessage);
-        var message = chatRoomService.addMessage(chatMessage);
-
-        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, message);
+        return ResponseDto.toResponseEntity(ResponseMessage.SUCCESS, msg);
     }
 
     @GetMapping("/roomIndex/{roomId}")
